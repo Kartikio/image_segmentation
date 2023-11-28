@@ -71,7 +71,7 @@ def video():
                 ret, frame = cap.read()
                 if ret == False:
                     break
-                cv2.imshow('Image', frame)
+                # cv2.imshow('Image', frame)
                 seg_img = showing_predictions(frame)
                 seg_img = cv2.resize(seg_img, (0, 0), fx=5, fy=5)
                 seg_img = cv2.applyColorMap(seg_img, cv2.COLORMAP_WINTER)
