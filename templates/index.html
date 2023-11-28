@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class='content'>
+    {% if videos|length < 1 %} <h4>There are no videos uploaded. Please upload one.</h4>
+        {% else %}
+
+        <table border='2' class='index-table'>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Original and Segemented Videos</th>
+                <th>Actions</th>
+            </tr>
+            {% for vid in videos %}
+            <tr>
+                <td>
+                    {{vid.id}}
+                </td>
+                <td>
+                    {{vid.video_file}}
+                </td>
+                <td>
+                    <a href="{{ url_for('display_saved_video', vid_file = vid.video_file) }}">Original Video</a>
+                    <a href="{{ url_for('display_segmented_video', vid_file = vid.video_file) }}">Segmented Video</a>
+                </td>
+                <td>
+                    <a href='/delete/{{vid.id}}'>Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        <p></p>
+
+        <p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        </p>
+
+        {% if saved_video_file %}
+        <div style="margin: 10px auto;">
+            <video autoplay="autoplay" controls="controls" preload="preload">
+                <source src="{{ url_for('display_sav_video',video_file = saved_video_file) }}" type="video/mp4">
+                </source>
+            </video>
+        </div>
+        {% endif %}
+        {% if segmented_video_file %}
+        <div style="margin: 10px auto;">
+            <video autoplay="autoplay" controls="controls" preload="preload">
+                <source src="{{ url_for('display_seg_video',video_file = segmented_video_file) }}" type="video/mp4">
+                </source>
+            </video>
+        </div>
+        {% endif %}
+        <form method="post" action="/" enctype="multipart/form-data">
+            <dl>
+                <p>
+                    <input type="file" name="file" autocomplete="off" required>
+                </p>
+            </dl>
+            <p>
+                <input type="submit" value="Upload">
+            </p>
+        </form>
+
+        <a href="{{ url_for('video') }}">Click here for Home.</a>
+</div>
+{% endblock %}
